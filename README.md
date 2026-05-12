@@ -256,27 +256,6 @@ Frontend will start on `http://localhost:5173`
 - **Backend API**: Port 5209
 - **Frontend Web**: Port 5173
 
-### Using Docker Compose
-```bash
-# Development environment
-docker-compose -f docker-compose.dev.yml up --build
-
-# Production environment
-docker-compose up --build
-
-# Run in background
-docker-compose -f docker-compose.dev.yml up -d
-
-# Stop services
-docker-compose -f docker-compose.dev.yml down
-
-# View logs
-docker-compose -f docker-compose.dev.yml logs
-
-# Clean up everything
-docker-compose -f docker-compose.dev.yml down -v
-```
-
 ### Service Dependencies
 - **Backend** waits for PostgreSQL (healthy) and DynamoDB (started)
 - **Frontend** runs independently (no hard dependencies)
