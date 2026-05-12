@@ -1,0 +1,128 @@
+# Frontend .gitignore - React/Vite/TypeScript Specific
+
+# v0 sandbox internal files
+__v0_runtime_loader.js
+__v0_devtools.tsx
+__v0_jsx-dev-runtime.ts
+.snowflake/
+.v0-trash/
+.vercel/
+
+# Environment Variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env*.local
+
+# Dependencies
+node_modules/
+jspm_packages/
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build Outputs
+dist/
+build/
+out/
+.next/
+.nuxt/
+.cache/
+.parcel-cache/
+
+# Testing
+coverage/
+*.lcov
+.nyc_output
+cypress/videos/
+cypress/screenshots/
+
+# Production
+build/
+
+# Misc
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Editor directories and files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Temporary folders
+tmp/
+temp/
+
+# Vite
+.vite/
+
+# TypeScript
+*.tsbuildinfo
+
+# Storybook build outputs
+storybook-static
+
+# Local Netlify folder
+.netlify
+
+# Package manager lock files (keep one based on your preference)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# Turbo
+.turbo
+
+# Vercel
+.vercel
+
+# Stylelint
+.stylelintcache
+
+# ESLint
+.eslintcache
+
+# Prettier
+.prettierignore
+
+# Tailwind
+.tailwindcache

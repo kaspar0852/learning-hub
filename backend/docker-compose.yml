@@ -1,0 +1,30 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: marketplace-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: marketplace
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d marketplace"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  dynamodb-local:
+    image: amazon/dynamodb-local:latest
+    container_name: marketplace-dynamodb
+    ports:
+      - "8000:8000"
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath /home/dynamodblocal/data"
+    volumes:
+      - dynamodb_data:/home/dynamodblocal/data
+
+volumes:
+  postgres_data:
+  dynamodb_data:

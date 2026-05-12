@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: marketplace-db
+    environment:
+      POSTGRES_DB: marketplace
+      POSTGRES_USER: marketplace
+      POSTGRES_PASSWORD: marketplace123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    networks:
+      - marketplace-network
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: marketplace-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=marketplace;Username=marketplace;Password=marketplace123
+      - GeoIp__BaseUrl=http://ip-api.com
+      - GeoIp__FallbackCurrencyCode=USD
+      - GeoIp__CacheMinutes=60
+      - ExchangeRate__BaseUrl=https://v6.exchangerate-api.com
+      - ExchangeRate__ApiKey=${EXCHANGE_RATE_API_KEY}
+      - ExchangeRate__BaseCurrency=USD
+      - DynamoDb__TableName=user-favorites
+      - DynamoDb__Region=${AWS_REGION:-us-east-1}
+    ports:
+      - "5209:80"
+    depends_on:
+      - postgres
+    networks:
+      - marketplace-network
+    env_file:
+      - .env
+
+  # Frontend
+  frontend:
+    build:
+      context: ./learning-platform-frontned
+      dockerfile: Dockerfile
+    container_name: marketplace-web
+    environment:
+      - VITE_API_BASE_URL=http://localhost:5209
+      - VITE_ENABLE_LOCATION_DETECTION=true
+      - VITE_ENABLE_PRICE_CONVERSION=true
+      - VITE_FEATURE_FAVORITES=true
+      - VITE_FEATURE_SEARCH=true
+      - VITE_DEFAULT_CURRENCY=USD
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    networks:
+      - marketplace-network
+
+volumes:
+  postgres_data:
+
+networks:
+  marketplace-network:
+    driver: bridge
