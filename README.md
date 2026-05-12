@@ -24,19 +24,81 @@ An international English language learning platform that connects teachers with 
 - **ASP.NET Core 9** Web API
 - **PostgreSQL** for structured teacher data
 - **DynamoDB** for user favorites (NoSQL)
-- **Clean Architecture** with separation of concerns
 - **External APIs**: ipapi.co (geolocation), ExchangeRate-API (currency conversion)
 
 ## 🚀 Quick Start
 
-### Option 1: Docker Compose (Recommended) 🐳
+### Prerequisites
 
-#### Prerequisites
+**Required:**
 - Docker & Docker Compose installed
-- **Make** (optional, for convenience commands)
 - ExchangeRate-API key (free at [exchangerate-api.com](https://www.exchangerate-api.com))
 
-##### Installing Make (if not available)
+**Optional:**
+- Make (for convenience commands - see Option 2)
+
+---
+
+### Option 1: Docker Compose (Recommended) 🐳
+
+This is the **easiest and fastest** way to get the application running. All services (database, backend, frontend) start automatically.
+
+#### One-Command Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/kaspar0852/learning-hub.git
+cd learning
+
+# Setup environment
+cp .env.example .env
+# Edit .env and add your ExchangeRate-API key
+
+# Start everything!
+./start.sh
+```
+
+That's it! 🎉 The application will be available at:
+- **Frontend**: http://localhost:5173
+- **Backend API**: http://localhost:5209  
+- **Swagger Docs**: http://localhost:5209/swagger
+
+#### What You Get Automatically
+
+✅ **PostgreSQL Database** (port 5433) with 10 pre-seeded teachers  
+✅ **DynamoDB Local** (port 8000) for favorites storage  
+✅ **Backend API** (port 5209) with health checks  
+✅ **Frontend Web** (port 5173) with modern UI  
+✅ **Smart service dependencies** and startup ordering  
+
+#### Manual Docker Commands
+
+If you prefer manual control over Docker:
+
+```bash
+# Start all services
+docker-compose -f docker-compose.dev.yml up --build
+
+# Run in background
+docker-compose -f docker-compose.dev.yml up -d
+
+# Stop services
+docker-compose -f docker-compose.dev.yml down
+
+# View logs
+docker-compose -f docker-compose.dev.yml logs
+
+# Clean up everything
+docker-compose -f docker-compose.dev.yml down -v
+```
+
+---
+
+### Option 2: Using Make (Convenience Commands) 🔧
+
+If you have `make` installed, you can use these convenient commands:
+
+#### Installing Make (if not available)
 
 **macOS:**
 ```bash
@@ -63,59 +125,26 @@ wsl --install
 # Then follow Ubuntu instructions inside WSL
 ```
 
-#### Method A: Using Make (Recommended)
+#### Make Commands
 
-##### One-Command Setup
 ```bash
-git clone https://github.com/kaspar0852/learning-hub/edit/main
-cd learning-hub
+# One-time setup
 make setup
-```
 
-##### Start Development Environment
-```bash
+# Start development environment
 make dev
-```
 
-#### Method B: Without Make (Alternative)
-
-##### Setup Environment
-```bash
-git clone https://github.com/kaspar0852/learning-hub/edit/main
-cd learning
-
-# Create environment file
-cp .env.example .env
-
-# Edit .env with your API keys (required: EXCHANGE_RATE_API_KEY)
-```
-
-##### Start Development Environment
-```bash
-# Build and start services
-docker-compose -f docker-compose.dev.yml up --build -d
-
-# Wait 30 seconds for services to start
-sleep 30
+# View logs
+make logs
 
 # Check status
-docker-compose -f docker-compose.dev.yml ps
-```
-
-##### Useful Commands (Alternative)
-```bash
-# View logs
-docker-compose -f docker-compose.dev.yml logs
-
-# View specific service logs
-docker-compose -f docker-compose.dev.yml logs backend
+make status
 
 # Stop services
-docker-compose -f docker-compose.dev.yml down
+make stop
 
-# Clean up everything
-docker-compose -f docker-compose.dev.yml down -v
-docker system prune -f
+# Clean up
+make clean
 ```
 
 That's it! 🎉 The application will be available at:
