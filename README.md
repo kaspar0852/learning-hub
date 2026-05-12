@@ -40,37 +40,6 @@ An international English language learning platform that connects teachers with 
 ---
 
 ### Option 1: Docker Compose (Recommended) 🐳
-
-This is the **easiest and fastest** way to get the application running. All services (database, backend, frontend) start automatically.
-
-#### One-Command Setup
-
-```bash
-# Clone the repository
-git clone https://github.com/kaspar0852/learning-hub.git
-cd learning
-
-# Setup environment
-cp .env.example .env
-# Edit .env and add your ExchangeRate-API key
-
-# Start everything!
-./start.sh
-```
-
-That's it! 🎉 The application will be available at:
-- **Frontend**: http://localhost:5173
-- **Backend API**: http://localhost:5209  
-- **Swagger Docs**: http://localhost:5209/swagger
-
-#### What You Get Automatically
-
-✅ **PostgreSQL Database** (port 5433) with 10 pre-seeded teachers  
-✅ **DynamoDB Local** (port 8000) for favorites storage  
-✅ **Backend API** (port 5209) with health checks  
-✅ **Frontend Web** (port 5173) with modern UI  
-✅ **Smart service dependencies** and startup ordering  
-
 #### Manual Docker Commands
 
 If you prefer manual control over Docker:
