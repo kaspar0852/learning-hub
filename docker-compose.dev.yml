@@ -44,7 +44,7 @@ services:
       - GeoIp__FallbackCurrencyCode=USD
       - GeoIp__CacheMinutes=60
       - ExchangeRate__BaseUrl=https://v6.exchangerate-api.com
-      - ExchangeRate__ApiKey=efdefcdd27d1cd0af88ce9df
+      - ExchangeRate__ApiKey=${EXCHANGE_RATE_API_KEY}
       - ExchangeRate__BaseCurrency=USD
       - DynamoDb__ServiceUrl=http://dynamodb:8000
       - DynamoDb__TableName=user-favorites
