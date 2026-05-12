@@ -46,19 +46,19 @@ If you prefer manual control over Docker:
 
 ```bash
 # Start all services
-docker-compose -f docker-compose.dev.yml up --build
+docker-compose -f docker-compose.yml up --build
 
 # Run in background
-docker-compose -f docker-compose.dev.yml up -d
+docker-compose -f docker-compose.yml up -d
 
 # Stop services
-docker-compose -f docker-compose.dev.yml down
+docker-compose -f docker-compose.yml down
 
 # View logs
-docker-compose -f docker-compose.dev.yml logs
+docker-compose -f docker-compose.yml logs
 
 # Clean up everything
-docker-compose -f docker-compose.dev.yml down -v
+docker-compose -f docker-compose.yml down -v
 ```
 
 ---
