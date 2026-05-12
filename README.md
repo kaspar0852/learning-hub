@@ -38,7 +38,7 @@ An international English language learning platform that connects teachers with 
 #### One-Command Setup
 ```bash
 git clone <your-repo-url>
-cd learning
+cd learning-hub
 make setup
 ```
 
