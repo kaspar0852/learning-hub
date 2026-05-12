@@ -1,6 +1,7 @@
 using Marketplace.Api.Middleware;
 using Marketplace.Application;
 using Marketplace.Infrastructure;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,9 @@ builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddProblemDetails();
 builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddHealthChecks();
+
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new() { Title = "Marketplace API", Version = "v1" });
@@ -38,5 +42,7 @@ app.UseExceptionHandler();
 app.UseMiddleware<GlobalExceptionMiddleware>();
 app.UseCors("frontend-dev");
 app.MapControllers();
+
+app.MapHealthChecks("/health");
 
 app.Run();

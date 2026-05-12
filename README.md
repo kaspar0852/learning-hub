@@ -33,18 +33,92 @@ An international English language learning platform that connects teachers with 
 
 #### Prerequisites
 - Docker & Docker Compose installed
+- **Make** (optional, for convenience commands)
 - ExchangeRate-API key (free at [exchangerate-api.com](https://www.exchangerate-api.com))
 
-#### One-Command Setup
+##### Installing Make (if not available)
+
+**macOS:**
+```bash
+# Install Xcode Command Line Tools (includes make)
+xcode-select --install
+
+# Or install via Homebrew
+brew install make
+```
+
+**Ubuntu/Debian:**
+```bash
+sudo apt update
+sudo apt install build-essential
+```
+
+**Windows:**
+```bash
+# Install via Chocolatey
+choco install make
+
+# Or via WSL (Recommended for development)
+wsl --install
+# Then follow Ubuntu instructions inside WSL
+```
+
+#### Method A: Using Make (Recommended)
+
+##### One-Command Setup
 ```bash
 git clone <your-repo-url>
 cd learning
 make setup
 ```
 
-#### Start Development Environment
+##### Start Development Environment
 ```bash
 make dev
+```
+
+#### Method B: Without Make (Alternative)
+
+##### Setup Environment
+```bash
+git clone <your-repo-url>
+cd learning
+
+# Create environment file
+cp .env.example .env
+
+# Edit .env with your API keys (required: EXCHANGE_RATE_API_KEY)
+```
+
+##### Start Development Environment
+```bash
+# Stop any existing containers
+docker-compose -f docker-compose.dev.yml down --remove-orphans
+
+# Build and start services
+docker-compose -f docker-compose.dev.yml up --build -d
+
+# Wait 30 seconds for services to start
+sleep 30
+
+# Check status
+docker-compose -f docker-compose.dev.yml ps
+```
+
+##### Useful Commands (Alternative)
+```bash
+# View logs
+docker-compose -f docker-compose.dev.yml logs
+
+# View specific service logs
+docker-compose -f docker-compose.dev.yml logs backend
+
+# Stop services
+docker-compose -f docker-compose.dev.yml down
+
+# Clean up everything
+docker-compose -f docker-compose.dev.yml down -v
+docker system prune -f
 ```
 
 That's it! 🎉 The application will be available at:
@@ -148,16 +222,39 @@ npm run dev
 
 Frontend will start on `http://localhost:5173`
 
-## 🐳 Docker Setup (Optional)
+## 🐳 Docker Setup (Recommended)
+
+### Services Included
+- **PostgreSQL Database**: Port 5433 (external) / 5432 (internal)
+- **DynamoDB Local**: Port 8000 (for favorites storage)
+- **Backend API**: Port 5209
+- **Frontend Web**: Port 5173
 
 ### Using Docker Compose
 ```bash
-# Build and run all services
+# Development environment
+docker-compose -f docker-compose.dev.yml up --build
+
+# Production environment
 docker-compose up --build
 
 # Run in background
-docker-compose up -d
+docker-compose -f docker-compose.dev.yml up -d
+
+# Stop services
+docker-compose -f docker-compose.dev.yml down
+
+# View logs
+docker-compose -f docker-compose.dev.yml logs
+
+# Clean up everything
+docker-compose -f docker-compose.dev.yml down -v
 ```
+
+### Service Dependencies
+- **Backend** waits for PostgreSQL (healthy) and DynamoDB (started)
+- **Frontend** runs independently (no hard dependencies)
+- **Health checks** ensure proper startup order
 
 ### Individual Services
 ```bash
@@ -170,6 +267,12 @@ docker run -p 5209:80 marketplace-api
 cd learning-platform-frontned
 docker build -t marketplace-web .
 docker run -p 5173:80 marketplace-web
+
+# PostgreSQL
+docker run -d --name postgres -p 5433:5432 -e POSTGRES_DB=marketplace -e POSTGRES_USER=marketplace -e POSTGRES_PASSWORD=marketplace123 postgres:15-alpine
+
+# DynamoDB Local
+docker run -d --name dynamodb -p 8000:8000 amazon/dynamodb-local:latest -jar DynamoDBLocal.jar -sharedDb
 ```
 
 ## 🔧 API Keys Setup

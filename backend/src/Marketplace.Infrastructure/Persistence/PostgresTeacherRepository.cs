@@ -24,7 +24,7 @@ public sealed class PostgresTeacherRepository : ITeacherRepository
         }
 
         return await query
-            .OrderBy(t => t.Name)
+            .OrderByDescending(t => t.CreatedAtUtc)
             .ToListAsync(cancellationToken);
     }
 

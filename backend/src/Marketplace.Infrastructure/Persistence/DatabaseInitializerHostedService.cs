@@ -50,76 +50,88 @@ public sealed class DatabaseInitializerHostedService : IHostedService
             return;
         }
 
+        var baseTime = DateTime.UtcNow.AddDays(-10); // Start 10 days ago for realistic timestamps
+        
         dbContext.Teachers.AddRange(
             new Teacher
             {
                 Id = Guid.Parse("0f6af8cb-384d-4e78-b47d-25cc06ec8e00"),
                 Name = "Anna Smith",
                 Level = TeacherLevel.Beginner,
-                BasePriceUsd = 16.00m
+                BasePriceUsd = 16.00m,
+                CreatedAtUtc = baseTime.AddDays(9) // 9 days ago
             },
             new Teacher
             {
                 Id = Guid.Parse("2d57426c-73ef-4f99-bf0c-b39f3c1bbf5d"),
                 Name = "John Taylor",
                 Level = TeacherLevel.Advanced,
-                BasePriceUsd = 28.00m
+                BasePriceUsd = 28.00m,
+                CreatedAtUtc = baseTime.AddDays(8) // 8 days ago
             },
             new Teacher
             {
                 Id = Guid.Parse("5b56b86a-9d35-4eea-94bf-71f153eb2aa4"),
                 Name = "Maria Lopez",
                 Level = TeacherLevel.Beginner,
-                BasePriceUsd = 20.00m
+                BasePriceUsd = 20.00m,
+                CreatedAtUtc = baseTime.AddDays(7) // 7 days ago
             },
             new Teacher
             {
                 Id = Guid.Parse("8a2c4d1e-3f5a-4b6c-9d7e-8f1a2b3c4d5e"),
                 Name = "Dr. Sarah Chen",
                 Level = TeacherLevel.Advanced,
-                BasePriceUsd = 35.00m
+                BasePriceUsd = 35.00m,
+                CreatedAtUtc = baseTime.AddDays(6) // 6 days ago
             },
             new Teacher
             {
                 Id = Guid.Parse("b3e5f6a7-8c9d-4e5f-a6b7-c8d9e0f1a2b3"),
                 Name = "Michael Johnson",
                 Level = TeacherLevel.Beginner,
-                BasePriceUsd = 18.00m
+                BasePriceUsd = 18.00m,
+                CreatedAtUtc = baseTime.AddDays(5) // 5 days ago
             },
             new Teacher
             {
                 Id = Guid.Parse("c4f6a7b8-d9e0-4f1a-b2c3-d4e5f6a7b8c9"),
                 Name = "Emma Wilson",
                 Level = TeacherLevel.Advanced,
-                BasePriceUsd = 32.00m
+                BasePriceUsd = 32.00m,
+                CreatedAtUtc = baseTime.AddDays(4) // 4 days ago
             },
             new Teacher
             {
                 Id = Guid.Parse("d5e7f8a9-e0f1-4b2c-d3e4-f5a6b7c8d9e0"),
                 Name = "James Anderson",
                 Level = TeacherLevel.Beginner,
-                BasePriceUsd = 15.00m
+                BasePriceUsd = 15.00m,
+                CreatedAtUtc = baseTime.AddDays(3) // 3 days ago
             },
             new Teacher
             {
                 Id = Guid.Parse("e6f8a9b0-f1a2-4c3d-e4f5-a6b7c8d9e0f1"),
                 Name = "Sophie Martin",
                 Level = TeacherLevel.Advanced,
-                BasePriceUsd = 30.00m
+                BasePriceUsd = 30.00m,
+                CreatedAtUtc = baseTime.AddDays(2) // 2 days ago
             },
             new Teacher
             {
                 Id = Guid.Parse("f7a9b0c1-a2b3-4d4e-f5a6-b7c8d9e0f1a2"),
                 Name = "David Brown",
                 Level = TeacherLevel.Beginner,
-                BasePriceUsd = 17.00m
+                BasePriceUsd = 17.00m,
+                CreatedAtUtc = baseTime.AddDays(1) // 1 day ago
             },
             new Teacher
             {
                 Id = Guid.Parse("a8b0c1d2-b3c4-4e5f-a6b7-c8d9e0f1a2b3"),
                 Name = "Lisa Garcia",
                 Level = TeacherLevel.Advanced,
-                BasePriceUsd = 26.00m
+                BasePriceUsd = 26.00m,
+                CreatedAtUtc = baseTime.AddDays(0) // Today (latest)
             });
 
         await dbContext.SaveChangesAsync(cancellationToken);

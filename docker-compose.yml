@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # PostgreSQL Database
   postgres:
@@ -10,10 +8,25 @@ services:
       POSTGRES_USER: marketplace
       POSTGRES_PASSWORD: marketplace123
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./backend/scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    networks:
+      - marketplace-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U marketplace -d marketplace"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # DynamoDB Local 
+  dynamodb:
+    image: amazon/dynamodb-local:latest
+    container_name: marketplace-dynamodb
+    command: "-jar DynamoDBLocal.jar -sharedDb"
+    ports:
+      - "8000:8000"
+    working_dir: /home/dynamodblocal
     networks:
       - marketplace-network
 
@@ -24,24 +37,35 @@ services:
       dockerfile: Dockerfile
     container_name: marketplace-api
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=marketplace;Username=marketplace;Password=marketplace123
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_HTTP_PORTS=80
+      - ConnectionStrings__Postgres=Host=postgres;Port=5432;Database=marketplace;Username=marketplace;Password=marketplace123
       - GeoIp__BaseUrl=http://ip-api.com
       - GeoIp__FallbackCurrencyCode=USD
       - GeoIp__CacheMinutes=60
       - ExchangeRate__BaseUrl=https://v6.exchangerate-api.com
       - ExchangeRate__ApiKey=${EXCHANGE_RATE_API_KEY}
       - ExchangeRate__BaseCurrency=USD
+      - DynamoDb__ServiceUrl=http://dynamodb:8000
       - DynamoDb__TableName=user-favorites
       - DynamoDb__Region=${AWS_REGION:-us-east-1}
     ports:
       - "5209:80"
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
+      dynamodb:
+        condition: service_started
     networks:
       - marketplace-network
     env_file:
       - .env
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
   # Frontend
   frontend:
@@ -58,13 +82,17 @@ services:
       - VITE_DEFAULT_CURRENCY=USD
     ports:
       - "5173:80"
-    depends_on:
-      - backend
     networks:
       - marketplace-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
 volumes:
   postgres_data:
+  dynamodb_data:
 
 networks:
   marketplace-network:

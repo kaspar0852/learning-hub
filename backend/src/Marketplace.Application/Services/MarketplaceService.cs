@@ -98,7 +98,8 @@ public sealed class MarketplaceService
             Id = Guid.NewGuid(),
             Name = dto.Name.Trim(),
             Level = dto.Level,
-            BasePriceUsd = dto.BasePriceUsd
+            BasePriceUsd = dto.BasePriceUsd,
+            CreatedAtUtc = DateTime.UtcNow
         };
 
         var created = await _teacherRepository.CreateTeacherAsync(teacher, cancellationToken);
