@@ -67,7 +67,7 @@ wsl --install
 
 ##### One-Command Setup
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/kaspar0852/learning-hub/edit/main
 cd learning-hub
 make setup
 ```
@@ -144,7 +144,7 @@ make shell-db     # Access database shell
 
 #### 1. Clone Repository
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/kaspar0852/learning-hub/edit/main
 cd learning
 ```
 
