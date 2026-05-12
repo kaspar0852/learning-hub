@@ -29,28 +29,63 @@ An international English language learning platform that connects teachers with 
 
 ## 🚀 Quick Start
 
-### Prerequisites
+### Option 1: Docker Compose (Recommended) 🐳
+
+#### Prerequisites
+- Docker & Docker Compose installed
+- ExchangeRate-API key (free at [exchangerate-api.com](https://www.exchangerate-api.com))
+
+#### One-Command Setup
+```bash
+git clone <your-repo-url>
+cd learning
+make setup
+```
+
+#### Start Development Environment
+```bash
+make dev
+```
+
+That's it! 🎉 The application will be available at:
+- **Frontend**: http://localhost:5173
+- **Backend API**: http://localhost:5209  
+- **Swagger Docs**: http://localhost:5209/swagger
+
+#### Useful Commands
+```bash
+make logs        # View service logs
+make status      # Check service status
+make stop        # Stop all services
+make clean       # Clean up containers
+make shell-backend # Access backend container
+make shell-db     # Access database shell
+```
+
+### Option 2: Manual Setup
+
+#### Prerequisites
 - Node.js 18+ 
 - .NET 9 SDK
 - PostgreSQL 14+
 - AWS Account (for DynamoDB)
 - API Keys (see Configuration section)
 
-### 1. Clone the Repository
+#### 1. Clone Repository
 ```bash
 git clone <your-repo-url>
 cd learning
 ```
 
-### 2. Backend Setup
+#### 2. Backend Setup
 
-#### Install Dependencies
+##### Install Dependencies
 ```bash
 cd backend/src/Marketplace.Api
 dotnet restore
 ```
 
-#### Database Setup
+##### Database Setup
 ```bash
 # Create PostgreSQL database
 createdb marketplace
@@ -59,7 +94,7 @@ createdb marketplace
 dotnet ef database update
 ```
 
-#### Configuration
+##### Configuration
 Create `appsettings.Development.json`:
 ```json
 {
@@ -80,22 +115,22 @@ Create `appsettings.Development.json`:
 }
 ```
 
-#### Run Backend
+##### Run Backend
 ```bash
 dotnet run
 ```
 
 Backend will start on `http://localhost:5209`
 
-### 3. Frontend Setup
+#### 3. Frontend Setup
 
-#### Install Dependencies
+##### Install Dependencies
 ```bash
 cd ../learning-platform-frontned
 npm install
 ```
 
-#### Configuration
+##### Configuration
 Create `.env` file:
 ```
 VITE_API_BASE_URL=http://localhost:5209
@@ -106,7 +141,7 @@ VITE_FEATURE_SEARCH=true
 VITE_DEFAULT_CURRENCY=USD
 ```
 
-#### Run Frontend
+##### Run Frontend
 ```bash
 npm run dev
 ```
@@ -219,32 +254,6 @@ dotnet test
 ### Frontend Architecture
 - **React Query**: Handles server state and caching automatically
 - **Zustand**: Lightweight alternative to Redux for client state
-
-## 🚀 Future Enhancements
-
-1. **Real-time Booking System**: Calendar integration and scheduling
-2. **Video Integration**: WebRTC for online lessons
-3. **Payment Processing**: Stripe integration for lesson payments
-4. **Teacher Profiles**: Enhanced profiles with video intros
-5. **Review System**: Student ratings and reviews
-6. **Notifications**: Email/SMS for lesson reminders
-
-## 📝 Technical Discussion Points
-
-### Scalability Considerations
-- **Horizontal Scaling**: Stateless API design enables easy scaling
-- **Database Sharding**: Teachers table can be sharded by region
-- **CDN Integration**: Static assets and API responses
-
-### Security Measures
-- **API Rate Limiting**: Prevent abuse of external APIs
-- **Data Validation**: Input sanitization and SQL injection prevention
-- **HTTPS**: SSL/TLS encryption for all communications
-
-### Performance Optimizations
-- **Lazy Loading**: Teacher cards loaded on demand
-- **Image Optimization**: Compressed teacher profile images
-- **API Response Caching**: Redis layer for frequently accessed data
 
 ## 🤝 Contributing
 
