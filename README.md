@@ -81,7 +81,7 @@ make dev
 
 ##### Setup Environment
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/kaspar0852/learning-hub/edit/main
 cd learning
 
 # Create environment file
@@ -92,9 +92,6 @@ cp .env.example .env
 
 ##### Start Development Environment
 ```bash
-# Stop any existing containers
-docker-compose -f docker-compose.dev.yml down --remove-orphans
-
 # Build and start services
 docker-compose -f docker-compose.dev.yml up --build -d
 
